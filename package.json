@@ -7,7 +7,7 @@
     "start": "cross-env CHAIN=mainnet  NODE_ENV=development ts-node ./src/app.ts",
     "build": "tsc",
     "dev": "cross-env CHAIN=mainnet  NODE_ENV=development nodemon",
-    "prod": "cross-env CHAIN=mainnet  NODE_ENV=production yarn build && pm2 start ./dist/app.js"
+    "prod": "cross-env CHAIN=mainnet  NODE_ENV=production yarn build && pm2 start ./dist/app.js --name trading-new-listings"
   },
   "devDependencies": {
     "@types/node": "^20.12.3",
