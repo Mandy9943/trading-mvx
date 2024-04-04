@@ -17,18 +17,20 @@ const main = async () => {
   const data = await operationStorage.readData();
 
   if (!data.operation) {
-    logger.info("\n---Starting new cycle---");
-    trade(shard); // Trade with shard 1
+    console.log("\n");
+    logger.info("---Starting new cycle---");
+    await trade(shard); // Trade with shard 1
   }
 
   isTrading = false; // Marca que el ciclo de trade ha terminado
 };
 
-// Configura el intervalo para llamar a main cada 10 segundos
-setInterval(() => {
-  main(); // Llama a main en el intervalo configurado
-}, config.loopSeconds);
+const app = async () => {
+  while (true) {
+    await main(); // Llama a main en el intervalo configurado
 
-setTimeout(() => {
-  main(); // Inicia el primer llamado inmediatamente
-}, 5000);
+    await new Promise((resolve) => setTimeout(resolve, config.loopSeconds));
+  }
+};
+
+app();
