@@ -1,11 +1,20 @@
 import { e, envChain, World } from "xsuite";
 
+import { ProxyNetworkProvider } from "@multiversx/sdk-network-providers/out";
+import BigNumber from "bignumber.js";
 import config from "../config";
 import { wrapEgldContract } from "../config/network";
 import { ShardType } from "./types";
-
+const provider = new ProxyNetworkProvider(
+  "https://devnet-gateway.multiversx.com",
+  {
+    timeout: 10000,
+  }
+);
 const world = World.new({
   chainId: envChain.id(),
+
+  proxyUrl: "https://gateway.multiversx.com",
 });
 
 export const walletShard0 = () =>
@@ -65,6 +74,15 @@ export const tradeToken = async ({
   scAddress: string;
   shard: ShardType;
 }) => {
+  console.log({
+    amountToPay: new BigNumber(amountToPay).div(10 ** 18).toString(),
+    tokenToPay,
+    tokenToBuy,
+    minAmountToBuy,
+    scAddress,
+    shard,
+  });
+
   const wallet = selectWallet(shard);
   const w = await wallet();
   const result = await w.callContract({
@@ -73,7 +91,7 @@ export const tradeToken = async ({
     gasLimit: 20_000_000,
     esdts: [
       {
-        amount: amountToPay,
+        amount: Math.floor(amountToPay),
         nonce: 0,
         id: tokenToPay,
       },

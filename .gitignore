@@ -4,3 +4,5 @@ logs/combined.log
 logs/error.log
 wallets
 dit
+operation.json
+pools.json

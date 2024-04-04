@@ -18,6 +18,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "@multiversx/sdk-network-providers": "^2.4.3",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",

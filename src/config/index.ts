@@ -6,9 +6,12 @@ interface Config {
   telegramBot: string;
   walletFilePassword: string;
 
+  buyPercent: number;
   loopSeconds: number;
   maxProfit: number /* For example *10 or *5  */;
-  maxTimeAfterBuy: number /* In seconds */;
+  timeToCheckMaxProfit: number;
+  timeForFirstSell: number /* In seconds */;
+  timeForSecondSell: number;
   minLiquidityLockedUSD: number /* In usd  */;
   telegramChatIds: number[];
 }
@@ -26,10 +29,13 @@ function loadConfig(): Config {
     telegramBot: validateEnvVariable("TEL_BOT_TOKEN"),
     walletFilePassword: validateEnvVariable("WALLET_FILE_PASSWORD"),
 
-    loopSeconds: 10 /* 10 seconds */,
-    maxProfit: 10 /* For example *10 or *5  */,
-    maxTimeAfterBuy: 30 /* In seconds */,
-    minLiquidityLockedUSD: 800 /* In WEGLD  */,
+    buyPercent: 1,
+    loopSeconds: 10000 /* 10 seconds */,
+    maxProfit: 10 /* x10 */,
+    timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
+    timeForFirstSell: 1000 * 60 /* 1 minute */,
+    timeForSecondSell: 1000 * 60 * 3 /* 3 minutes */,
+    minLiquidityLockedUSD: 800 /* 800 usd  */,
     telegramChatIds: [709820730],
   };
 }
