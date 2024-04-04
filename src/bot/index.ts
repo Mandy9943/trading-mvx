@@ -12,10 +12,10 @@ import logger from "../utils/logger";
 import { error, info } from "../utils/notify";
 import { operationStorage, poolStorage } from "../utils/storage";
 
+let operation = false;
 export const trade = async (shard: ShardType) => {
-  logger.info("trade shard: " + shard);
   const pairs = await retryAsyncFunction(fetchXexchangePairs, []);
-
+  logger.info("pairs fetched");
   // Filter pairs that are active and have a minimum liquidity locked
   const notSwappedPairs = pairs.filter(
     (pair) =>
@@ -103,37 +103,44 @@ const buyToken = async (pair: IPair, shard: ShardType): Promise<boolean> => {
     .times(config.buyPercent)
     .dividedBy(100);
 
-  const txResult = await retryAsyncFunction(tradeToken, [
-    {
-      // fix amount to pay
-      amountToPay: amountToPay.toNumber(),
-      tokenToPay: pair.secondToken.identifier,
-      tokenToBuy: pair.firstToken.identifier,
-      minAmountToBuy: new BigNumber(1).toNumber(),
-      scAddress: pair.address,
-      shard: shard,
-    },
-  ]);
+  try {
+    const txResult = await retryAsyncFunction(
+      tradeToken,
+      [
+        {
+          // fix amount to pay
+          amountToPay: amountToPay.toNumber(),
+          tokenToPay: pair.secondToken.identifier,
+          tokenToBuy: pair.firstToken.identifier,
+          minAmountToBuy: new BigNumber(1).toNumber(),
+          scAddress: pair.address,
+          shard: shard,
+        },
+      ],
+      5
+    );
 
-  info(
-    `Comprando ${config.buyPercent}% (${amountToPay
-      .dividedBy(10 ** pair.secondToken.decimals)
-      .toNumber()
-      .toLocaleString()} ${
-      pair.secondToken.identifier
-    }) del token para el par <${pair.firstToken.ticker} | ${
-      pair.secondToken.ticker
-    }>` +
-      "\n" +
-      `Buy order for : ${amountToPay
+    info(
+      `Comprando ${config.buyPercent}% (${amountToPay
         .dividedBy(10 ** pair.secondToken.decimals)
         .toNumber()
-        .toLocaleString()} ${pair.secondToken.identifier}\nURL: ${
-        txResult.explorerUrl
-      }`
-  );
-
-  return true;
+        .toLocaleString()} ${
+        pair.secondToken.identifier
+      }) del token para el par <${pair.firstToken.ticker} | ${
+        pair.secondToken.ticker
+      }>` +
+        "\n" +
+        `Buy order for : ${amountToPay
+          .dividedBy(10 ** pair.secondToken.decimals)
+          .toNumber()
+          .toLocaleString()} ${pair.secondToken.identifier}\nURL: ${
+          txResult.explorerUrl
+        }`
+    );
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
 const sellToken = async (
   pair: IPair,
@@ -157,16 +164,20 @@ const sellToken = async (
     .times(percentage)
     .div(100);
 
-  const txResult = await retryAsyncFunction(tradeToken, [
-    {
-      amountToPay: amountToPay.toNumber(),
-      tokenToPay: pair.firstToken.identifier,
-      tokenToBuy: pair.secondToken.identifier,
-      minAmountToBuy: new BigNumber(1).toNumber(),
-      scAddress: pair.address,
-      shard: shard,
-    },
-  ]);
+  const txResult = await retryAsyncFunction(
+    tradeToken,
+    [
+      {
+        amountToPay: amountToPay.toNumber(),
+        tokenToPay: pair.firstToken.identifier,
+        tokenToBuy: pair.secondToken.identifier,
+        minAmountToBuy: new BigNumber(1).toNumber(),
+        scAddress: pair.address,
+        shard: shard,
+      },
+    ],
+    10
+  );
 
   info(
     `Vendiendo ${percentage}% del token para el par <${pair.firstToken.ticker} | ${pair.secondToken.ticker}>` +
@@ -196,46 +207,50 @@ const operate = async (pair: IPair, shard: ShardType) => {
 
   logger.info("Buying token...");
 
-  await buyToken(pair, shard);
+  const successFullBuy = await buyToken(pair, shard);
 
-  sellConditionMet = false; // Reiniciar la condición de venta para cada operación
-  const buyPrice: number = Number(pair.firstTokenPriceUSD);
+  if (successFullBuy) {
+    sellConditionMet = false; // Reiniciar la condición de venta para cada operación
+    const buyPrice: number = Number(pair.firstTokenPriceUSD);
 
-  // Suponer que la función para verificar el precio actual del token está implementada
-  const checkPriceAndSell = async () => {
-    const newPair = await fetchXechangePair(pair.address);
+    // Suponer que la función para verificar el precio actual del token está implementada
+    const checkPriceAndSell = async () => {
+      const newPair = await fetchXechangePair(pair.address);
 
-    const currentPrice = Number(newPair.firstTokenPriceUSD); // Necesitarías implementar esta función
+      const currentPrice = Number(newPair.firstTokenPriceUSD); // Necesitarías implementar esta función
 
-    if (currentPrice >= buyPrice * config.maxProfit && !sellConditionMet) {
-      logger.info("Buy price: $" + buyPrice);
-      logger.info("Current Price: $" + currentPrice);
-      logger.info("Required price: $" + buyPrice * config.maxProfit);
-      console.log("\n");
-      info("Max profit meet with the price :" + currentPrice);
-      await sellToken(pair, shard); // Vende si el precio es x10 y no se ha vendido todavía
-    }
-  };
+      if (currentPrice >= buyPrice * config.maxProfit && !sellConditionMet) {
+        logger.info("Buy price: $" + buyPrice);
+        logger.info("Current Price: $" + currentPrice);
+        logger.info("Required price: $" + buyPrice * config.maxProfit);
+        console.log("\n");
+        info("Max profit meet with the price :" + currentPrice);
+        await sellToken(pair, shard); // Vende si el precio es x10 y no se ha vendido todavía
+      }
+    };
 
-  logger.info("Checking price and selling if necessary...");
-  // Verificar cada X tiempo si el precio ha alcanzado x10
-  const priceCheckInterval = setInterval(
-    checkPriceAndSell,
-    config.timeToCheckMaxProfit
-  );
+    logger.info("Checking price and selling if necessary...");
+    // Verificar cada X tiempo si el precio ha alcanzado x10
+    const priceCheckInterval = setInterval(
+      checkPriceAndSell,
+      config.timeToCheckMaxProfit
+    );
 
-  // Esperar 1 minuto y vender el 70% si aún no se ha vendido
-  setTimeout(async () => {
-    if (!sellConditionMet) {
-      await sellToken(pair, shard, 70);
-    }
-  }, config.timeForFirstSell); // 1 minuto
+    // Esperar minuto y vender el 100% si aún no se ha vendido
+    setTimeout(async () => {
+      if (!sellConditionMet) {
+        await sellToken(pair, shard);
+      }
 
-  // Esperar 5 minutos y vender el resto si aún no se ha vendido
-  setTimeout(async () => {
-    if (!sellConditionMet) {
-      await sellToken(pair, shard); // Vende el 100% por defecto
-    }
-    clearInterval(priceCheckInterval); // Limpia el intervalo de revisión de precio
-  }, config.timeForSecondSell); // 5 minutos
+      clearInterval(priceCheckInterval);
+    }, config.timeForFirstSell); // 1 minuto
+
+    // // Esperar 5 minutos y vender el resto si aún no se ha vendido
+    // setTimeout(async () => {
+    //   if (!sellConditionMet) {
+    //     await sellToken(pair, shard); // Vende el 100% por defecto
+    //   }
+    //   clearInterval(priceCheckInterval); // Limpia el intervalo de revisión de precio
+    // }, config.timeForSecondSell); // 5 minutos
+  }
 };
