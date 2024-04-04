@@ -67,6 +67,18 @@ export const trade = async (shard: ShardType) => {
       );
     }
   } else {
+    const newPoolsNoSwapper = notSwappedPairs.filter((oldPair) => {
+      const found = oldPairs.find((pair) => pair.address === oldPair.address);
+      return !found;
+    });
+
+    const newPool = newPoolsNoSwapper[0];
+    if (newPoolsNoSwapper.length > 0 && newPool) {
+      info(
+        `Se acaba de crear un pool <${newPool.firstToken.ticker} - ${newPool.secondToken.ticker}>\nPool URL: https://explorer.multiversx.com/accounts/${newPool.address}\nToken : ${newPool.firstToken.identifier}`
+      );
+    }
+
     logger.info(
       `No new pairs to swap yet. Waiting for ${notSwappedPairs
         .map((p) => `${p.firstToken.identifier}`)
