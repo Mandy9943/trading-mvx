@@ -29,13 +29,13 @@ function loadConfig(): Config {
     telegramBot: validateEnvVariable("TEL_BOT_TOKEN"),
     walletFilePassword: validateEnvVariable("WALLET_FILE_PASSWORD"),
 
-    buyPercent: 90,
+    buyPercent: 100,
     loopSeconds: 5000 /* 10 seconds */,
     maxProfit: 10 /* x10 */,
     timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
     timeForFirstSell: 1000 * 60 /* 1 minute */,
     timeForSecondSell: 1000 * 60 * 3 /* 3 minutes */,
-    minLiquidityLockedUSD: 500 /*  usd  */,
+    minLiquidityLockedUSD: 800 /*  usd  */,
     telegramChatIds: [709820730],
   };
 }

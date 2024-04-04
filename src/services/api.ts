@@ -80,7 +80,7 @@ export const fetchXexchangePairs = async (): Promise<IPair[]> => {
     body: JSON.stringify({
       operationName: "activePoolsDataQuery",
       variables: {
-        offset: 180,
+        offset: 205,
         limit: 500,
       },
       query: `query activePoolsDataQuery($offset: Int!, $limit: Int!) {
