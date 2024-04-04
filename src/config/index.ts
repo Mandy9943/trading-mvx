@@ -29,7 +29,7 @@ function loadConfig(): Config {
     telegramBot: validateEnvVariable("TEL_BOT_TOKEN"),
     walletFilePassword: validateEnvVariable("WALLET_FILE_PASSWORD"),
 
-    buyPercent: 1,
+    buyPercent: 80,
     loopSeconds: 10000 /* 10 seconds */,
     maxProfit: 10 /* x10 */,
     timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
