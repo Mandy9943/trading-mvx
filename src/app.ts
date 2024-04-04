@@ -1,6 +1,7 @@
 import { trade } from "./bot";
 import config from "./config";
 import logger from "./utils/logger";
+import { error } from "./utils/notify";
 import { operationStorage } from "./utils/storage";
 
 let isTrading = false; // Controla si ya hay un ciclo de trade en ejecución
@@ -27,9 +28,15 @@ const main = async () => {
 
 const app = async () => {
   while (true) {
-    await main(); // Llama a main en el intervalo configurado
+    try {
+      await main(); // Llama a main en el intervalo configurado
 
-    await new Promise((resolve) => setTimeout(resolve, config.loopSeconds));
+      await new Promise((resolve) => setTimeout(resolve, config.loopSeconds));
+    } catch (err: any) {
+      error(
+        `App fallo gravemente\n\nMensaje: ${err.message}\n\nCode: ${err.code}`
+      );
+    }
   }
 };
 
