@@ -35,7 +35,7 @@ function loadConfig(): Config {
     timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
     timeForFirstSell: 1000 * 60 /* 1 minute */,
     timeForSecondSell: 1000 * 60 * 3 /* 3 minutes */,
-    minLiquidityLockedUSD: 800 /*  usd  */,
+    minLiquidityLockedUSD: 1000 /*  usd  */,
     telegramChatIds: [709820730],
   };
 }
