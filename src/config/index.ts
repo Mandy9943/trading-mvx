@@ -30,7 +30,7 @@ function loadConfig(): Config {
     walletFilePassword: validateEnvVariable("WALLET_FILE_PASSWORD"),
 
     buyPercent: 90,
-    loopSeconds: 10000 /* 10 seconds */,
+    loopSeconds: 5000 /* 10 seconds */,
     maxProfit: 10 /* x10 */,
     timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
     timeForFirstSell: 1000 * 60 /* 1 minute */,
