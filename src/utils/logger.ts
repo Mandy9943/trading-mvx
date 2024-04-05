@@ -24,9 +24,9 @@ const logger = createLogger({
         )
       ),
     }),
-    // Configuración para archivo de logs
-    new transports.File({ filename: "logs/error.log", level: "error" }),
-    new transports.File({ filename: "logs/combined.log" }),
+    // // Configuración para archivo de logs
+    // new transports.File({ filename: "logs/error.log", level: "error" }),
+    // new transports.File({ filename: "logs/combined.log" }),
   ],
 });
 

@@ -15,12 +15,12 @@ import { operationStorage, poolStorage } from "../utils/storage";
 let operation = false;
 export const trade = async (shard: ShardType) => {
   const pairs = await retryAsyncFunction(fetchXexchangePairs, []);
-  logger.info("pairs fetched");
   // Filter pairs that are active and have a minimum liquidity locked
   const notSwappedPairs = pairs.filter(
     (pair) =>
       pair.state === "PartialActive" &&
-      Number(pair.secondTokenLockedValueUSD) > config.minLiquidityLockedUSD
+      Number(pair.secondTokenLockedValueUSD) > config.minLiquidityLockedUSD &&
+      !config.blackList.includes(pair.firstToken.identifier)
   );
 
   //compare this pairs with the one in the database

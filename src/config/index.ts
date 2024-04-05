@@ -14,6 +14,7 @@ interface Config {
   timeForSecondSell: number;
   minLiquidityLockedUSD: number /* In usd  */;
   telegramChatIds: number[];
+  blackList: string[];
 }
 
 function validateEnvVariable(name: string): string {
@@ -37,6 +38,7 @@ function loadConfig(): Config {
     timeForSecondSell: 1000 * 60 * 3 /* 3 minutes */,
     minLiquidityLockedUSD: 1000 /*  usd  */,
     telegramChatIds: [709820730],
+    blackList: ["FLOKIX-24eb0d"],
   };
 }
 
