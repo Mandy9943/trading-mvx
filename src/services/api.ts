@@ -45,14 +45,14 @@ export async function retryAsyncFunction<T, Args extends any[]>(
   throw new Error("Unexpected loop termination in retryAsyncFunction");
 }
 
-export const fetchTokensBalance = async (
+export async function fetchTokensBalance(
   address: string
-): Promise<ITokenBalance[]> => {
+): Promise<ITokenBalance[]> {
   const { data } = await api.get<ITokenBalance[]>(
     `/accounts/${address}/tokens`
   );
   return data;
-};
+}
 
 export const fetchTokenBalanceByAccount = async (
   tokenIdentifier: string,

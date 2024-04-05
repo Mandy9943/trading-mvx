@@ -94,7 +94,10 @@ export const trade = async (shard: ShardType) => {
 
 let sellConditionMet = false;
 
-const buyToken = async (pair: IPair, shard: ShardType): Promise<boolean> => {
+export const buyToken = async (
+  pair: IPair,
+  shard: ShardType
+): Promise<boolean> => {
   logger.info(
     `Fetching token balance for token ${pair.secondToken.identifier}...`
   );
