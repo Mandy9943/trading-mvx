@@ -1,6 +1,5 @@
 import { trade } from "./bot";
 import config from "./config";
-import logger from "./utils/logger";
 import { error } from "./utils/notify";
 import { operationStorage } from "./utils/storage";
 
@@ -18,8 +17,6 @@ const main = async () => {
   const data = await operationStorage.readData();
 
   if (!data.operation) {
-    console.log("\n");
-    logger.info("---Starting new cycle---");
     await trade(shard); // Trade with shard 1
   }
 
