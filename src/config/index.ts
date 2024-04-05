@@ -11,6 +11,7 @@ interface Config {
   maxProfit: number /* For example *10 or *5  */;
   timeToCheckMaxProfit: number;
   timeForFirstSell: number /* In seconds */;
+  percentFirstSell: number;
   timeForSecondSell: number;
   minLiquidityLockedUSD: number /* In usd  */;
   telegramChatIds: number[];
@@ -34,11 +35,12 @@ function loadConfig(): Config {
     loopSeconds: 1500 /* 10 seconds */,
     maxProfit: 10 /* x10 */,
     timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
-    timeForFirstSell: 1000 * 60 /* 1 minute */,
-    timeForSecondSell: 1000 * 60 * 3 /* 3 minutes */,
+    timeForFirstSell: 1000 * 60 * 1.5 /* 1  minute y 30 sec */,
+    percentFirstSell: 60,
+    timeForSecondSell: 1000 * 60 * 5 /* 5 minutes */,
     minLiquidityLockedUSD: 1000 /*  usd  */,
     telegramChatIds: [709820730],
-    blackList: ["FLOKIX-24eb0d"],
+    blackList: [],
   };
 }
 

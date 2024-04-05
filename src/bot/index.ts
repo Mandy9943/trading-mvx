@@ -254,18 +254,16 @@ const operate = async (pair: IPair, shard: ShardType) => {
     // Esperar minuto y vender el 100% si aún no se ha vendido
     setTimeout(async () => {
       if (!sellConditionMet) {
-        await sellToken(pair, shard);
+        await sellToken(pair, shard, config.percentFirstSell);
       }
+    }, config.timeForFirstSell);
 
-      clearInterval(priceCheckInterval);
-    }, config.timeForFirstSell); // 1 minuto
-
-    // // Esperar 5 minutos y vender el resto si aún no se ha vendido
-    // setTimeout(async () => {
-    //   if (!sellConditionMet) {
-    //     await sellToken(pair, shard); // Vende el 100% por defecto
-    //   }
-    //   clearInterval(priceCheckInterval); // Limpia el intervalo de revisión de precio
-    // }, config.timeForSecondSell); // 5 minutos
+    // Esperar 5 minutos y vender el resto si aún no se ha vendido
+    setTimeout(async () => {
+      if (!sellConditionMet) {
+        await sellToken(pair, shard); // Vende el 100% por defecto
+      }
+      clearInterval(priceCheckInterval); // Limpia el intervalo de revisión de precio
+    }, config.timeForSecondSell); // 5 minutos
   }
 };
