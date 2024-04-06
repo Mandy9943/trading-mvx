@@ -40,7 +40,7 @@ function loadConfig(): Config {
     timeForSecondSell: 1000 * 60 * 5 /* 5 minutes */,
     minLiquidityLockedUSD: 1000 /*  usd  */,
     telegramChatIds: [709820730],
-    blackList: [],
+    blackList: ["CARS-d90e27"],
   };
 }
 
