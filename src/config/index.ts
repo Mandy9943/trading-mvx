@@ -13,7 +13,6 @@ interface Config {
   timeForFirstSell: number /* In seconds */;
   percentFirstSell: number;
   timeForSecondSell: number;
-  minLiquidityLockedUSD: number /* In usd  */;
   telegramChatIds: number[];
   blackList: string[];
 }
@@ -38,7 +37,6 @@ function loadConfig(): Config {
     timeForFirstSell: 1000 * 60 * 1.5 /* 1  minute y 30 sec */,
     percentFirstSell: 60,
     timeForSecondSell: 1000 * 60 * 5 /* 5 minutes */,
-    minLiquidityLockedUSD: 1000 /*  usd  */,
     telegramChatIds: [709820730],
     blackList: ["CARS-d90e27"],
   };

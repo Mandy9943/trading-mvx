@@ -19,7 +19,6 @@ export const trade = async (shard: ShardType) => {
   const notSwappedPairs = pairs.filter(
     (pair) =>
       pair.state === "PartialActive" &&
-      Number(pair.secondTokenLockedValueUSD) > config.minLiquidityLockedUSD &&
       !config.blackList.includes(pair.firstToken.identifier)
   );
 
