@@ -115,7 +115,7 @@ export const buyToken = async (
   }
 
   const amountToPay = new BigNumber(tokenBalance.balance)
-    .times(config.buyPercent)
+    .times(config.buyPercent === 100 ? 99 : config.buyPercent)
     .dividedBy(100);
 
   try {
