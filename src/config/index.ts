@@ -12,7 +12,7 @@ interface Config {
   timeToCheckMaxProfit: number;
   timeForFirstSell: number /* In seconds */;
   percentFirstSell: number;
-  timeForSecondSell: number;
+  // timeForSecondSell: number;
   telegramChatIds: number[];
   blackList: string[];
 }
@@ -32,11 +32,11 @@ function loadConfig(): Config {
 
     buyPercent: 100,
     loopSeconds: 1500 /* 10 seconds */,
-    maxProfit: 10 /* x10 */,
+    maxProfit: 2 /* x10 */,
     timeToCheckMaxProfit: 1000 * 2 /* 2 seconds */,
     timeForFirstSell: 1000 * 60 * 1.5 /* 1  minute y 30 sec */,
-    percentFirstSell: 60,
-    timeForSecondSell: 1000 * 60 * 5 /* 5 minutes */,
+    percentFirstSell: 100,
+    // timeForSecondSell: 1000 * 60 * 5 /* 5 minutes */,
     telegramChatIds: [709820730],
     blackList: ["CARS-d90e27"],
   };
