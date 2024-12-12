@@ -11,18 +11,18 @@ import logger from "../utils/logger";
 import { error, info } from "../utils/notify";
 import { operationStorage, poolStorage } from "../utils/storage";
 
-let operation = false;
+let targetToken = "TOM-48414f";
 export const trade = async (shard: ShardType) => {
   const pairs = await retryAsyncFunction(fetchXexchangePairs, []);
 
   // Filter only for TOM-48414f token
   const targetPair = pairs.find(
-    (pair) => pair.firstToken.identifier === "TOM-48414f"
+    (pair) => pair.firstToken.identifier === targetToken
   );
 
   if (targetPair && targetPair.state === "PartialActive") {
     info(
-      `TOM-48414f reach to xechange <${targetPair.firstToken.ticker} | ${
+      `${targetToken}reach to xechange <${targetPair.firstToken.ticker} | ${
         targetPair.secondToken.ticker
       }> - ${new Date().toLocaleString()}`
     );
@@ -30,13 +30,13 @@ export const trade = async (shard: ShardType) => {
 
   if (targetPair && targetPair.state === "Active") {
     info(
-      `TOM-48414f pool is now tradable! <${targetPair.firstToken.ticker} | ${
-        targetPair.secondToken.ticker
-      }> - ${new Date().toLocaleString()}`
+      `${targetToken} pool is now tradable! <${
+        targetPair.firstToken.ticker
+      } | ${targetPair.secondToken.ticker}> - ${new Date().toLocaleString()}`
     );
     operate(targetPair, shard);
   } else {
-    logger.info("Waiting for TOM-48414f pool to become tradable...");
+    logger.info(`Waiting for ${targetToken} pool to become tradable...`);
   }
 
   // Update the database with the current pair state
@@ -115,11 +115,11 @@ const operate = async (pair: IPair, shard: ShardType) => {
     operation: true,
   });
 
-  logger.info("Buying TOM-48414f token...");
+  logger.info(`Buying ${targetToken} token...`);
   const successFullBuy = await buyToken(pair, shard);
 
   if (successFullBuy) {
-    info("Successfully bought TOM-48414f token - HOLDING position");
+    info(`Successfully bought ${targetToken} token - HOLDING position`);
     // No selling logic needed as we want to hold
   } else {
     operationStorage.updateData({

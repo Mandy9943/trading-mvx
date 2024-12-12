@@ -80,47 +80,30 @@ export const fetchXexchangePairs = async (): Promise<IPair[]> => {
     body: JSON.stringify({
       operationName: "activePoolsDataQuery",
       variables: {
-        offset: 400,
+        offset: 407,
         limit: 1000,
       },
       query: `query activePoolsDataQuery($offset: Int!, $limit: Int!) {
               pairs(offset: $offset, limit: $limit) {
                 address
                 firstToken {
-                  balance
+                 
                   decimals
-                  name
+                  
                   identifier
                   ticker
-                  owner
                   
-                       price
-                       type
-                       __typename
+
                      }
                      firstTokenPrice
-                     firstTokenLockedValueUSD
                      secondToken {
-                       balance
                        decimals
-                       name
                        identifier
                        ticker
-                       owner
-                       
-                       price
-                       type
-                       __typename
                      }
-                     secondTokenPrice
-                     secondTokenLockedValueUSD
                      
                      state
-                     type
-                     lockedValueUSD
-                     
-                     volumeUSD24h
-                     
+                                          
     
           }
         }

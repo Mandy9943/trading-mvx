@@ -82,7 +82,7 @@ export const tradeToken = async ({
   const result = await w.callContract({
     callee: scAddress,
     funcName: "swapTokensFixedInput",
-    gasLimit: 20_000_000,
+    gasLimit: 200_000_000,
     esdts: [
       {
         amount: Math.floor(amountToPay),
