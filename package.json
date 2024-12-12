@@ -10,9 +10,9 @@
     "test": "CHAIN=mainnet jest --detectOpenHandles",
     "prod": "cross-env CHAIN=mainnet  NODE_ENV=production yarn build && pm2 start ./dist/app.js --name trading-new-listings",
     "wrapEgld": "CHAIN=mainnet ts-node src/wrapEgld.ts",
-    "pm2": "pm2 start ./dist/app.js --name buy-tom",
+    "pm2": "npm run build && CHAIN=mainnet pm2 start ./dist/app.js --name buy-tom",
     "pm2-stop": "pm2 stop buy-tom",
-    "pm2-restart": "pm2 restart buy-tom"
+    "pm2-restart": "npm run build && CHAIN=mainnet pm2 restart buy-tom"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
