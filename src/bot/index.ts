@@ -14,9 +14,10 @@ import { operationStorage, poolStorage } from "../utils/storage";
 let operation = false;
 export const trade = async (shard: ShardType) => {
   const pairs = await retryAsyncFunction(fetchXexchangePairs, []);
+
   // Filter only for TOM-48414f token
   const targetPair = pairs.find(
-    (pair) => pair.firstToken.identifier === "EUG-902041"
+    (pair) => pair.firstToken.identifier === "TOM-48414f"
   );
 
   if (targetPair && targetPair.state === "Active") {
@@ -112,5 +113,9 @@ const operate = async (pair: IPair, shard: ShardType) => {
   if (successFullBuy) {
     info("Successfully bought TOM-48414f token - HOLDING position");
     // No selling logic needed as we want to hold
+  } else {
+    operationStorage.updateData({
+      operation: false,
+    });
   }
 };

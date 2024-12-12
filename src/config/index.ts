@@ -15,6 +15,7 @@ interface Config {
   // timeForSecondSell: number;
   telegramChatIds: number[];
   blackList: string[];
+  botName: string;
 }
 
 function validateEnvVariable(name: string): string {
@@ -39,6 +40,7 @@ function loadConfig(): Config {
     // timeForSecondSell: 1000 * 60 * 5 /* 5 minutes */,
     telegramChatIds: [709820730],
     blackList: ["CARS-d90e27"],
+    botName: process.env.BOT_NAME!,
   };
 }
 
