@@ -1,16 +1,10 @@
 import { e, envChain, World } from "xsuite";
 
-import { ProxyNetworkProvider } from "@multiversx/sdk-network-providers/out";
 import BigNumber from "bignumber.js";
 import config from "../config";
 import { wrapEgldContract } from "../config/network";
 import { ShardType } from "./types";
-const provider = new ProxyNetworkProvider(
-  "https://devnet-gateway.multiversx.com",
-  {
-    timeout: 10000,
-  }
-);
+
 const world = World.new({
   chainId: envChain.id(),
 

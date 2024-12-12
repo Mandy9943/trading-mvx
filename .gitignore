@@ -7,3 +7,6 @@ dit
 operation.json
 pools.json
 coverage
+shard1.json
+shard2.json
+shard0.json
