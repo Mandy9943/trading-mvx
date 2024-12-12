@@ -1,9 +1,12 @@
 import { trade } from "./bot";
 import config from "./config";
-import { error } from "./utils/notify";
+import { selectWallet } from "./services/blochain-oprations";
+import { error, info } from "./utils/notify";
 import { operationStorage } from "./utils/storage";
 
 let isTrading = false; // Controla si ya hay un ciclo de trade en ejecución
+
+const shard = 1;
 
 const main = async () => {
   if (isTrading) {
@@ -11,8 +14,6 @@ const main = async () => {
   }
 
   isTrading = true; // Marca que el ciclo de trade ha comenzado
-
-  const shard = 1;
 
   const data = await operationStorage.readData();
 
@@ -24,6 +25,7 @@ const main = async () => {
 };
 
 const app = async () => {
+  info(`Started with wallet ${selectWallet(shard)().toString()}`);
   while (true) {
     try {
       await main(); // Llama a main en el intervalo configurado
