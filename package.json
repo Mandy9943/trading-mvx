@@ -12,7 +12,8 @@
     "wrapEgld": "CHAIN=mainnet ts-node src/wrapEgld.ts",
     "pm2": "npm run build && CHAIN=mainnet pm2 start ./dist/app.js --name buy-tom",
     "pm2-stop": "pm2 stop buy-tom",
-    "pm2-restart": "npm run build && CHAIN=mainnet pm2 restart buy-tom"
+    "pm2-restart": "npm run build && CHAIN=mainnet pm2 restart buy-tom",
+    "pull": "git pull origin buy-tom"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
