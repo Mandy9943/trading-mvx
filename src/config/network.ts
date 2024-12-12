@@ -1,3 +1,5 @@
+import { selectWallet } from "../services/blochain-oprations";
+
 export const tokensID = {
   wgld: "WEGLD-bd4d79",
   usdc: "USDC-c76f1f",
@@ -11,6 +13,6 @@ export const wrapEgldContract = {
 
 export const addressBaseOnShard = {
   "0": "",
-  "1": "erd1v0c2vl3e7sgm40waz8pfcjp2tuwr7sp9eg7vcek5gawddq7dy35s5yg8zr",
+  "1": selectWallet(1)().toString(),
   "2": "",
 };

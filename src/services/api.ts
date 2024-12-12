@@ -65,6 +65,7 @@ export const fetchTokenBalanceByAccount = async (
   const tokenBalance = tokensBalance.find(
     (token) => token.identifier === tokenIdentifier
   );
+
   return tokenBalance;
 };
 

@@ -1,6 +1,8 @@
+import BigNumber from "bignumber.js";
 import { trade } from "./bot";
 import config from "./config";
-import { selectWallet } from "./services/blochain-oprations";
+import { addressBaseOnShard, tokensID } from "./config/network";
+import { fetchTokenBalanceByAccount } from "./services/api";
 import { error, info } from "./utils/notify";
 import { operationStorage } from "./utils/storage";
 
@@ -25,7 +27,15 @@ const main = async () => {
 };
 
 const app = async () => {
-  info(`Started with wallet ${selectWallet(shard)().toString()}`);
+  info(
+    `Started with wallet ${
+      addressBaseOnShard[shard]
+    }\nWEGLD Balance ${new BigNumber(
+      (await fetchTokenBalanceByAccount(tokensID.wgld, shard))?.balance ?? 0
+    )
+      .div(10 ** 18)
+      .toFixed()}`
+  );
   while (true) {
     try {
       await main(); // Llama a main en el intervalo configurado
