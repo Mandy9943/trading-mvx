@@ -20,6 +20,14 @@ export const trade = async (shard: ShardType) => {
     (pair) => pair.firstToken.identifier === "TOM-48414f"
   );
 
+  if (targetPair && targetPair.state === "PartialActive") {
+    info(
+      `TOM-48414f reach to xechange <${targetPair.firstToken.ticker} | ${
+        targetPair.secondToken.ticker
+      }> - ${new Date().toLocaleString()}`
+    );
+  }
+
   if (targetPair && targetPair.state === "Active") {
     info(
       `TOM-48414f pool is now tradable! <${targetPair.firstToken.ticker} | ${
