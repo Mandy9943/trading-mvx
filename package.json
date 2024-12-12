@@ -8,7 +8,8 @@
     "build": "tsc",
     "dev": "cross-env CHAIN=mainnet  NODE_ENV=development nodemon",
     "test": "CHAIN=mainnet jest --detectOpenHandles",
-    "prod": "cross-env CHAIN=mainnet  NODE_ENV=production yarn build && pm2 start ./dist/app.js --name trading-new-listings"
+    "prod": "cross-env CHAIN=mainnet  NODE_ENV=production yarn build && pm2 start ./dist/app.js --name trading-new-listings",
+    "wrapEgld": "CHAIN=mainnet ts-node src/wrapEgld.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
