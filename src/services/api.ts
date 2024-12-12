@@ -29,6 +29,9 @@ export async function retryAsyncFunction<T, Args extends any[]>(
       // Ejecuta la función con los argumentos proporcionados y devuelve el resultado si es exitoso
       return await asyncFunc(...args);
     } catch (error) {
+      if ((error as Error)?.message.includes("404")) {
+        throw new Error("404");
+      }
       attempts++;
       console.log(`Attempt ${attempts} failed: ${(error as Error).message}`);
       if (attempts >= maxAttempts) {
@@ -65,6 +68,11 @@ export const fetchTokenBalanceByAccount = async (
   const tokenBalance = tokensBalance.find(
     (token) => token.identifier === tokenIdentifier
   );
+  if (!tokenBalance) {
+    console.log(
+      `No balance found in wallet ${address} for token ${tokenIdentifier}`
+    );
+  }
 
   return tokenBalance;
 };
