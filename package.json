@@ -14,7 +14,8 @@
     "pm2-stop": "pm2 stop buy-tom",
     "pm2-restart": "npm run build && CHAIN=mainnet pm2 restart buy-tom",
     "pull": "git pull origin buy-tom",
-    "create-wallet": "mkdir wallets && xsuite new-wallet --wallet wallets/shard1.json --shard 1"
+    "create-wallet": "mkdir wallets && xsuite new-wallet --wallet wallets/shard1.json --shard 1",
+    "update": "npm run pull && npm run pm2-restart"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
