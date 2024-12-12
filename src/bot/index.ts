@@ -20,14 +20,6 @@ export const trade = async (shard: ShardType) => {
     (pair) => pair.firstToken.identifier === targetToken
   );
 
-  if (targetPair && targetPair.state === "PartialActive") {
-    info(
-      `${targetToken}reach to xechange <${targetPair.firstToken.ticker} | ${
-        targetPair.secondToken.ticker
-      }> - ${new Date().toLocaleString()}`
-    );
-  }
-
   if (targetPair && targetPair.state === "Active") {
     info(
       `${targetToken} pool is now tradable! <${
