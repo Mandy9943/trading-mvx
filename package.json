@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env CHAIN=mainnet  NODE_ENV=development ts-node ./src/app.ts",
+    "start": "cross-env CHAIN=mainnet node ./dist/app.js",
     "build": "tsc",
     "dev": "cross-env CHAIN=mainnet  NODE_ENV=development nodemon",
     "test": "CHAIN=mainnet jest --detectOpenHandles",
